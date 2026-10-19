@@ -39,5 +39,16 @@ def decision():
                 }
             ],
         )
+
+        answer = decision.answers[0]
+        if answer.type == "refusal":
+            print(f"Refused: {answer.name}")
+        elif answer.type == "predicate":
+            print(f"Visible damage probability: {answer.probability}")
+    
     except base64.b64decodeError:
         print("Feil ved base64 decoding. Prøv igjen")
+
+
+
+decision()
