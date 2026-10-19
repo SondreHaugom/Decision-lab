@@ -9,14 +9,22 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 client = OpenAI(api_key=OPENAI_API_KEY)
+image_base64 = base64.b64encode(Path("product.png").read_bytes()).decode("ascii")
 
-def decicions(promt):
+def decision():
     try:
-        promt("You: ")
+        decision = client.decisions.crreate(
+            model = "gpt-6-luna",
+            input = [
+                {
+                    "role": "user",
+                    "contnet": [
+                        {"type": "input_text", "text": "Inspect the product in this photo."},
+                        {"image_url": f"data:image/png;base64,{image_base64}"}
+                    ]
+                }
+            ] 
+        )
 
-        if promt == "q":
-            print("Goodbye!")
-            exit()
-
-    except ValueError:
-        print("Feil ved innputt. Prøv igjen.")    
+    except base64.b64decodeError:
+        print("Feil ved base64 decoding. Prøv igjen")
