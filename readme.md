@@ -1,0 +1,1 @@
+# Her kommer dokumenasjon for hvordan man bruker denne koden.
