@@ -18,13 +18,26 @@ def decision():
             input = [
                 {
                     "role": "user",
-                    "contnet": [
+                    "content": [
                         {"type": "input_text", "text": "Inspect the product in this photo."},
-                        {"image_url": f"data:image/png;base64,{image_base64}"}
-                    ]
-                }
-            ] 
-        )
+                        {
+                            "type": "input_image",
+                            "image_url": f"data:image/png;base64,{image_base64}"
+                        },
+                    ],
+                },
+            ],
 
+            question = [
+                {
+                    "type": "predicate",
+                    "name": "visible_damage",
+                    "instructions": (
+                        "Does the product have visible damage, such as a crack, tear, or dent? "
+                        "Ignore shadows and damage to the packaging."
+                    ),
+                }
+            ],
+        )
     except base64.b64decodeError:
         print("Feil ved base64 decoding. Prøv igjen")
