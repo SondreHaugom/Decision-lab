@@ -9,11 +9,12 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 client = OpenAI(api_key=OPENAI_API_KEY)
-image_base64 = base64.b64encode(Path("product.png").read_bytes()).decode("ascii")
 
 def decision():
     try:
-        decision = client.decisions.crreate(
+        image_base64 = base64.b64encode(Path("product4.png").read_bytes()).decode("ascii")
+   
+        decision = client.decisions.create(
             model = "gpt-6-luna",
             input = [
                 {
@@ -28,7 +29,7 @@ def decision():
                 },
             ],
 
-            question = [
+            questions = [
                 {
                     "type": "predicate",
                     "name": "visible_damage",
@@ -46,9 +47,8 @@ def decision():
         elif answer.type == "predicate":
             print(f"Visible damage probability: {answer.probability}")
     
-    except base64.b64decodeError:
-        print("Feil ved base64 decoding. Prøv igjen")
-
+    except FileNotFoundError as e:
+        print(f"Feil ved lesing av bilde: {e}")
 
 
 decision()
