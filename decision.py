@@ -2,6 +2,8 @@ import base64
 from pathlib import Path
 from openai import OpenAI
 from dotenv import load_dotenv
+from user_input import user_input
+from model import models
 import os
 load_dotenv()
 # hent API-nøkkelen
@@ -9,6 +11,18 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 client = OpenAI(api_key=OPENAI_API_KEY)
+
+
+
+def user_promt():
+    promts = user_input()
+
+    return promts
+
+
+
+
+
 
 def decision():
     try:
@@ -20,7 +34,7 @@ def decision():
                 {
                     "role": "user",
                     "content": [
-                        {"type": "input_text", "text": "Inspect the product in this photo."},
+                        {"type": "input_text", "text": user_promt()},
                         {
                             "type": "input_image",
                             "image_url": f"data:image/png;base64,{image_base64}"
