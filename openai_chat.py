@@ -12,21 +12,10 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 
-
-
-
-
-
-
-
-
-
-"""
-
 def chat_with_gpt():
     while True:
         input = user_input()
-        if user_input == "q".lower():
+        if input == "q".lower():
             print("Goodbye!")
             break
         try:
@@ -34,11 +23,10 @@ def chat_with_gpt():
                 model= "gpt-6-luna",
                 input= input,
             )
-            print(response.choices[0].message.content)
+            print(response.output_text)
         
         except Exception as e:
             print(f"Error: {e} ")
 
 
 chat_with_gpt()
-"""
