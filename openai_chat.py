@@ -11,12 +11,6 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 
-def test_models():
-    
-
-
-"""
-
 def chat_with_gpt():
     while True:
         input = user_input()
@@ -25,7 +19,7 @@ def chat_with_gpt():
             break
         try:
             response = client.responses.create(
-                model= "gpt-6-luna",
+                model= models()[0],
                 input= input,
             )
             print(response.output_text)
@@ -36,5 +30,3 @@ def chat_with_gpt():
 
 chat_with_gpt()
 
-
-"""
