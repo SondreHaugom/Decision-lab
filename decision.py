@@ -12,15 +12,21 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 
-"""
 
 def user_promt():
     promts = user_input()
 
     return promts
 
-"""
 
+def model_type():
+    try:
+        fast = models()[1]
+        thorough = models()[0]
+        return fast and thorough
+    
+    except ValueError:
+        print("No models found")
 
 
 
@@ -30,7 +36,7 @@ def decision():
 
         decision = client.decisions.create(
             model=model,
-            input= "I was charged twice for my order.",
+            input= user_promt(),
             questions= [
                 {
                     "type": "choice",
