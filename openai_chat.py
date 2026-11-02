@@ -11,6 +11,11 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 
+def test_models():
+    
+
+
+"""
 
 def chat_with_gpt():
     while True:
@@ -30,3 +35,6 @@ def chat_with_gpt():
 
 
 chat_with_gpt()
+
+
+"""
