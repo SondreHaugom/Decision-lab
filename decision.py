@@ -1,4 +1,3 @@
-import base64
 from pathlib import Path
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -26,7 +25,7 @@ def user_promt():
 
 def decision():
     try:
-        image_base64 = base64.b64encode(Path("product4.png").read_bytes()).decode("ascii")
+        model = models()
    
         decision = client.decisions.create(
             model = "gpt-6-luna",
@@ -37,7 +36,7 @@ def decision():
                         {"type": "input_text", "text": user_promt()},
                         {
                             "type": "input_image",
-                            "image_url": f"data:image/png;base64,{image_base64}"
+                            "image_url": f"data:image/png;base64,{model}"
                         },
                     ],
                 },
@@ -46,10 +45,9 @@ def decision():
             questions = [
                 {
                     "type": "predicate",
-                    "name": "visible_damage",
+                    "name": "models",
                     "instructions": (
-                        "Does the product have visible damage, such as a crack, tear, or dent? "
-                        "Ignore shadows and damage to the packaging."
+                        "if the promt is lage use models[0] and if the promt i smal use models[1]"
                     ),
                 }
             ],
@@ -59,7 +57,7 @@ def decision():
         if answer.type == "refusal":
             print(f"Refused: {answer.name}")
         elif answer.type == "predicate":
-            print(f"Visible damage probability: {answer.probability}")
+            print(f"Right model for this task: {answer.probability}")
     
     except FileNotFoundError as e:
         print(f"Feil ved lesing av bilde: {e}")
