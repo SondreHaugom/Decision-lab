@@ -2,6 +2,7 @@ from openai import OpenAI
 from user_input import user_input
 from model import models
 from dotenv import load_dotenv
+from decision import decision
 import os
 load_dotenv()
 # hent API-nøkkelen
@@ -9,6 +10,16 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 client = OpenAI(api_key=OPENAI_API_KEY)
+
+
+def model_choice():
+    choice = decision()
+    model = ""
+    if choice == "Fast":
+        model = models()[1]
+    elif choice == "Thorough":
+        model = models()[0]
+    return model 
 
 
 def chat_with_gpt():
@@ -30,3 +41,4 @@ def chat_with_gpt():
 
 chat_with_gpt()
 
+    
