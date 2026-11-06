@@ -14,10 +14,12 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def user_promt():
-    promts = user_input()
+    try:
+        promts = user_input()
 
-    return promts
-
+        return promts
+    except ValueError:
+        print("No user input found")
 
 def model_type():
     try:
