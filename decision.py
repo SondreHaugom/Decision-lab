@@ -40,13 +40,11 @@ def decision():
             questions= [
                 {
                     "type": "choice",
-                    "name": "department",
-                    "instructions": "Which department should handle this complaint?",
+                    "name": "model_choice",
+                    "instructions": "Which AI models should be used for this task?",
                     "choices": [
-                        {"value": "billing", "description": "Payments, invoices, and refunds."},
-                        {"value": "technical", "description": "Problems using the product."},
-                        {"value": "shipping", "description": "Delivery and tracking."},
-                        {"value": "other", "description": "Requests outside these categories."},
+                        {"value": "Fast", "description": "Quick responses."},
+                        {"value": "Thorough", "description": "Detailed analysis."},
                     ],
                 },
             ],
@@ -55,7 +53,7 @@ def decision():
         if answer.type == "refusal":
             print(f"Refused: {answer.name}")
         elif answer.type == "choice":
-            print(f"Department: {answer.choice} (confidence: {answer.confidence})")
+            print(f"model_choice: {answer.choice} (confidence: {answer.confidence})")
 
     except FileNotFoundError as e:
         print(f"Feil ved lesing av bilde: {e}")
