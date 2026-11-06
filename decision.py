@@ -52,9 +52,15 @@ def decision():
         answer = decision.answers[0]
         if answer.type == "refusal":
             print(f"Refused: {answer.name}")
-        elif answer.type == "choice":
-            print(f"model_choice: {answer.choice} (confidence: {answer.confidence})")
 
+        elif answer.type == "choice":
+            if answer.choice == "Fast":
+                print(f"Best model for this task is: {answer.choice} (confidence: {answer.confidence})")
+                answer == models()[1]
+            elif answer.choice == "Thorough":
+                print(f"Best model for this task is: {answer.choice} (confidence: {answer.confidence})")
+                answer == models()[0]
+    
     except FileNotFoundError as e:
         print(f"Feil ved lesing av bilde: {e}")
 
