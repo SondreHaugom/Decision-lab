@@ -1,8 +1,7 @@
 from openai import OpenAI
 from user_input import user_input
-from model import models
 from dotenv import load_dotenv
-from decision import decision
+#from decision import decision
 import os
 load_dotenv()
 # hent API-nøkkelen
@@ -12,34 +11,48 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 
+def model_choice():
+    models = [
+        "gpt-6-luna",
+        "gpt-5.4-mini-2026-03-17"
+    ]
+
+    return models
+
+
+model_to_use = model_choice()[0]
+
+
 
 
 def chat_with_gpt():
     while True:
-        input = user_input()
-        if input == "q".lower():
+        user_promt = user_input()
+        if user_promt == "q".lower():
             print("Goodbye!")
             break
         try:
             response = client.responses.create(
-                model= "chatgpt-4o-latest",
-                input= input,
+                model= model_to_use,
+                input= user_promt,
             )
             print(response.output_text)
-        
+
+     
         except Exception as e:
             print(f"Error: {e} ")
 
 
+chat_with_gpt()
 
 
+"""
 def decision():
     try:
-        model = models()[0]
 
         decision = client.decisions.create(
-            model=model,
-            input= user_input(),
+            model= "gpt-6-luna",
+            input= user_promt,
             questions= [
                 {
                     "type": "choice",
@@ -58,15 +71,23 @@ def decision():
 
         elif answer.type == "choice":
             if answer.choice == "Fast":
-                print(f"Best model for this task is: {answer.choice}: {models()[1]} (confidence: {answer.confidence})")
-                chat_with_gpt()
+                print(f"Best model for this task is: {answer.choice}: {model_choice()[1]} (confidence: {answer.confidence})")
+                model_to_use = model_choice()[1]
+                #print(f"Model that is used: {model_to_use} and user input: {user_promt}")
+                chat_with_gpt(model_to_use)
             elif answer.choice == "Thorough":
-                print(f"Best model for this task is: {answer.choice}: {models()[0]} (confidence: {answer.confidence})")
-                chat_with_gpt()
+                print(f"Best model for this task is: {answer.choice}: {model_choice()[0]} (confidence: {answer.confidence})")
+                model_to_use = model_choice()[0]
+                print(f"Model that is used: {model_to_use} and user input: {user_promt}")
+                #chat_with_gpt(model_to_use)
+            else:
+                print(f"Invalid choice: {answer.choice}")
     
     except FileNotFoundError as e:
         print(f"Feil ved lesing av bilde: {e}")
 
 
+#decision()
 
 
+"""

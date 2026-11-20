@@ -14,12 +14,10 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def user_promt():
-    try:
-        promts = user_input()
+    promts = user_input()
 
-        return promts
-    except ValueError:
-        print("No user input found")
+    return promts
+
 
 def model_type():
     try:
@@ -42,11 +40,13 @@ def decision():
             questions= [
                 {
                     "type": "choice",
-                    "name": "model_choice",
-                    "instructions": "Which AI models should be used for this task?",
+                    "name": "department",
+                    "instructions": "Which department should handle this complaint?",
                     "choices": [
-                        {"value": "Fast", "description": "Quick responses."},
-                        {"value": "Thorough", "description": "Detailed analysis."},
+                        {"value": "billing", "description": "Payments, invoices, and refunds."},
+                        {"value": "technical", "description": "Problems using the product."},
+                        {"value": "shipping", "description": "Delivery and tracking."},
+                        {"value": "other", "description": "Requests outside these categories."},
                     ],
                 },
             ],
@@ -54,17 +54,10 @@ def decision():
         answer = decision.answers[0]
         if answer.type == "refusal":
             print(f"Refused: {answer.name}")
-
         elif answer.type == "choice":
-            if answer.choice == "Fast":
-                print(f"Best model for this task is: {answer.choice}: {models()[1]} (confidence: {answer.confidence})")
-                answer == models()[1]
-            elif answer.choice == "Thorough":
-                print(f"Best model for this task is: {answer.choice}: {models()[0]} (confidence: {answer.confidence})")
-                answer == models()[0]
-    
+            print(f"Department: {answer.choice} (confidence: {answer.confidence})")
+
     except FileNotFoundError as e:
         print(f"Feil ved lesing av bilde: {e}")
-
 
 decision()
