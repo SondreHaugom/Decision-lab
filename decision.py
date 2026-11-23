@@ -12,41 +12,34 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 
+def model_choice():
+    models = [
+        "gpt-6-luna",
+        "gpt-5.4-mini-2026-03-17"
+    ]
 
-def user_promt():
-    promts = user_input()
-
-    return promts
+    return models
 
 
-def model_type():
-    try:
-        fast = models()[1]
-        thorough = models()[0]
-        return fast and thorough
-    
-    except ValueError:
-        print("No models found")
+model_to_use = model_choice()[0]
+
 
 
 
 def decision():
     try:
-        model = models()[0]
-
+        user_promt = user_input()
         decision = client.decisions.create(
-            model=model,
-            input= user_promt(),
+            model= "gpt-6-luna",
+            input= user_promt,
             questions= [
                 {
                     "type": "choice",
-                    "name": "department",
-                    "instructions": "Which department should handle this complaint?",
+                    "name": "model_choice",
+                    "instructions": "Which AI models should be used for this task?",
                     "choices": [
-                        {"value": "billing", "description": "Payments, invoices, and refunds."},
-                        {"value": "technical", "description": "Problems using the product."},
-                        {"value": "shipping", "description": "Delivery and tracking."},
-                        {"value": "other", "description": "Requests outside these categories."},
+                        {"value": "Fast", "description": "Quick responses."},
+                        {"value": "Thorough", "description": "Detailed analysis."},
                     ],
                 },
             ],
@@ -54,10 +47,24 @@ def decision():
         answer = decision.answers[0]
         if answer.type == "refusal":
             print(f"Refused: {answer.name}")
-        elif answer.type == "choice":
-            print(f"Department: {answer.choice} (confidence: {answer.confidence})")
 
+        elif answer.type == "choice":
+            if answer.choice == "Fast":
+                print(f"Best model for this task is: {answer.choice}: {model_choice()[1]} (confidence: {answer.confidence})")
+                model_to_use = model_choice()[1]
+                #print(f"Model that is used: {model_to_use} and user input: {user_promt}")
+                chat_with_gpt(model_to_use)
+            elif answer.choice == "Thorough":
+                print(f"Best model for this task is: {answer.choice}: {model_choice()[0]} (confidence: {answer.confidence})")
+                model_to_use = model_choice()[0]
+                print(f"Model that is used: {model_to_use} and user input: {user_promt}")
+                #chat_with_gpt(model_to_use)
+            else:
+                print(f"Invalid choice: {answer.choice}")
+    
     except FileNotFoundError as e:
         print(f"Feil ved lesing av bilde: {e}")
 
+
 decision()
+
