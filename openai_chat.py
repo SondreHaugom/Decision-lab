@@ -58,26 +58,26 @@ def decision():
                 else:
                     print("No models available")
 
+                chat_with_gpt(model_to_use, user_promt)
         except Exception as e:
             print(f"Error: {e} ")
     
-    return model_to_use and user_promt
+    
+    
 
 
-decision()
+def chat_with_gpt(model_to_use, user_promt):
+    promt = user_promt
+    model = model_to_use
 
-"""
 
-
-def chat_with_gpt():
-    user_promt
-    if user_promt == "q".lower():
+    if promt == "q".lower():
         print("Goodbye!")
         
     try:
         response = client.responses.create(
-            model= model_to_use,
-            input= user_promt,
+            model= model,
+            input= promt,
         )
         print(response.output_text)
 
@@ -86,7 +86,4 @@ def chat_with_gpt():
         print(f"Error: {e} ")
 
 
-
-decision()
-
-"""
+chat_with_gpt(model_to_use, user_promt)
