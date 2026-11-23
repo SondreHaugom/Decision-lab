@@ -1,8 +1,8 @@
 from openai import OpenAI
-from user_input import user_input
 from dotenv import load_dotenv
-#from decision import decision
+from model import models
 import os
+
 load_dotenv()
 # hent API-nøkkelen
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -10,21 +10,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-
-def model_choice():
-    models = [
-        "gpt-6-luna",
-        "gpt-5.4-mini-2026-03-17"
-    ]
-
-    return models
-
+openai_models = models()
 
 model_to_use = ""
 
+
 def decision():
     while True:
-        try:
+        try: 
             user_promt = input("You: ")
             if user_promt == "q":
                 print("Goodbye!")
@@ -50,10 +43,10 @@ def decision():
 
             elif answer.type == "choice":
                 if answer.choice == "Fast":
-                    model_to_use = model_choice()[1]
+                    model_to_use = openai_models[1]
                     print(f"Model that is used: {model_to_use} (confidence: {answer.confidence})")
                 elif answer.choice == "Thorough":
-                    model_to_use = model_choice()[0]
+                    model_to_use = openai_models[0]
                     print(f"Model that is used: {model_to_use} (confidence: {answer.confidence})")
                 else:
                     print("No models available")
@@ -64,12 +57,12 @@ def decision():
     
     
     
-
+response_id = None
 
 def chat_with_gpt(model_to_use, user_promt):
+    global response_id
     promt = user_promt
     model = model_to_use
-
 
     if promt == "q".lower():
         print("Goodbye!")
@@ -78,10 +71,16 @@ def chat_with_gpt(model_to_use, user_promt):
         response = client.responses.create(
             model= model,
             input= promt,
+            stream= True,
+            previous_response_id= response_id,
         )
-        print(response.output_text)
-
-     
+        for event in response:
+            if event.type == "response.output_text.delta":
+                print(event.delta, end="", flush=True)
+            elif event.type == "response.completed":
+                response_id = event.response.id
+        print()
+ 
     except Exception as e:
         print(f"Error: {e} ")
 
