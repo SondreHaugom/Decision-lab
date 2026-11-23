@@ -51,10 +51,10 @@ def decision():
             elif answer.type == "choice":
                 if answer.choice == "Fast":
                     model_to_use = model_choice()[1]
-                    print(f"Model that is used: {model_to_use} (confidence: {answer.confidence})" )
+                    print(f"Model that is used: {model_to_use} (confidence: {answer.confidence})")
                 elif answer.choice == "Thorough":
                     model_to_use = model_choice()[0]
-                    print(f"Model that is used: {model_to_use} (confidence: {answer.confidence}) ")
+                    print(f"Model that is used: {model_to_use} (confidence: {answer.confidence})")
                 else:
                     print("No models available")
 
@@ -62,6 +62,11 @@ def decision():
             print(f"Error: {e} ")
     
     return model_to_use and user_promt
+
+
+decision()
+
+"""
 
 
 def chat_with_gpt():
@@ -83,3 +88,5 @@ def chat_with_gpt():
 
 
 decision()
+
+"""
