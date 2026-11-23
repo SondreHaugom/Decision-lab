@@ -14,6 +14,7 @@ openai_models = models()
 
 model_to_use = ""
 
+response_id = None
 
 def decision():
     while True:
@@ -57,7 +58,7 @@ def decision():
     
     
     
-response_id = None
+
 
 def chat_with_gpt(model_to_use, user_promt):
     global response_id
