@@ -86,4 +86,4 @@ def chat_with_gpt(model_to_use, user_promt):
         print(f"Error: {e} ")
 
 
-chat_with_gpt(model_to_use, user_promt)
+decision()
