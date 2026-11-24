@@ -46,9 +46,11 @@ def decision():
                 if answer.choice == "Fast":
                     model_to_use = openai_models[1]
                     print(f"Model that is used: {model_to_use} (confidence: {answer.confidence})")
+                    print("---------------------------------------------------------------------")
                 elif answer.choice == "Thorough":
                     model_to_use = openai_models[0]
                     print(f"Model that is used: {model_to_use} (confidence: {answer.confidence})")
+                    print("---------------------------------------------------------------------")
                 else:
                     print("No models available")
 
@@ -80,6 +82,8 @@ def chat_with_gpt(model_to_use, user_promt):
                 print(event.delta, end="", flush=True)
             elif event.type == "response.completed":
                 response_id = event.response.id
+            elif event.type == "error":
+                print(f"Error: {event.error.message}")
         print()
  
     except Exception as e:

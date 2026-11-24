@@ -2,11 +2,10 @@
 
 ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
 ![OpenAI](https://img.shields.io/badge/OpenAI%20API-412991?logo=openai&logoColor=white)
-![Status](https://img.shields.io/badge/status-versjon%201%20%E2%80%93%20under%20utvikling-yellow)
+![Status](https://img.shields.io/badge/status-under%20utvikling-yellow)
 ![Lisens](https://img.shields.io/badge/lisens-MIT-green)
 
-**Språk:** Python 3.13
-**Status:** Versjon 1 fungerer. Prosjektet er et læringsprosjekt og er fortsatt under utvikling.
+**Status:** Læringsprosjekt under utvikling.
 
 ## Innholdsfortegnelse
 
@@ -22,8 +21,6 @@ Decision Lab er en chat i terminalen som selv velger hvilken språkmodell som sk
 
 Ikke alle spørsmål trenger den kraftigste modellen. Et enkelt "hei" kan besvares raskt og billig, mens en kompleks analyse fortjener en grundigere modell. Decision Lab lar en egen beslutningsmodell vurdere kompleksiteten i hver prompt og sender den videre til modellen som passer best.
 
-Prosjektet er bygget som en øvelse i egen logikk og struktur.
-
 ## Funksjoner
 
 - **Automatisk modellvalg per melding:** Hver prompt vurderes på nytt, så modellen kan byttes underveis i samtalen.
@@ -31,10 +28,12 @@ Prosjektet er bygget som en øvelse i egen logikk og struktur.
   - **Fast** (`gpt-5.4-mini`) for enkle spørsmål og raske svar.
   - **Thorough** (`gpt-6-luna`) for spørsmål som krever grundig analyse.
 - **Viser hvilken modell som er valgt**, og hvor sikker beslutningsmodellen var på valget (confidence).
+- **Samtalehistorikk:** Modellen husker tidligere meldinger i samtalen, også når den bytter mellom Fast og Thorough. Dette gjøres med `previous_response_id`, så historikken holdes hos OpenAI og ikke i et lokalt array.
+- **Strømming av svar:** Svaret skrives ut fortløpende mens det genereres, i stedet for at du venter på hele svaret.
+- **Feilhåndtering:** Feil fra API-et, både før og under strømmingen, skrives ut uten at programmet krasjer.
 - **Kontinuerlig samtale** i terminalen til du avslutter med `q`.
-- **Én input per runde:** Du skriver meldingen én gang, og samme tekst brukes både til modellvalget og til svaret.
 
-> **Merk:** I versjon 1 husker ikke modellen tidligere meldinger. Hver melding behandles for seg.
+> **Merk:** Beslutningsmodellen ser bare meldingen du nettopp skrev, ikke resten av samtalen. Modellvalget baseres derfor kun på den siste prompten.
 
 ## Installasjon og oppsett
 
@@ -87,7 +86,8 @@ Skriv meldingen din etter `You:`. Skriv `q` for å avslutte.
 ```text
 You: Hei!
 Model that is used: gpt-5.4-mini (confidence: ...)
-(svaret fra modellen)
+---------------------------------------------------------------------
+(svaret strømmes fra modellen)
 You: q
 Goodbye!
 ```
@@ -103,12 +103,12 @@ Goodbye!
 ### Hva som sendes ut
 
 - **Alt du skriver sendes til OpenAI**, og hver melding sendes **to ganger**: én gang til beslutningsmodellen og én gang til modellen som svarer.
-- Hvordan dataene behandles og lagres hos OpenAI, styres av OpenAIs vilkår og innstillingene på API-kontoen din.
+- For at modellen skal huske samtalen, **lagres svarene hos OpenAI** og hentes med `previous_response_id`. Hvor lenge de lagres, styres av OpenAIs vilkår og innstillingene på API-kontoen din.
 - **Ikke skriv inn personopplysninger, sensitive opplysninger eller taushetsbelagt informasjon** i chatten.
 
 ### Hva som lagres lokalt
 
-- Programmet lagrer ingen samtalehistorikk på maskinen din. Meldingene finnes bare i terminalvinduet mens programmet kjører.
+- Programmet lagrer ingen samtalehistorikk på maskinen din. Når du avslutter, glemmes `response_id`, og neste kjøring starter en ny samtale.
 
 ## Lisens
 
