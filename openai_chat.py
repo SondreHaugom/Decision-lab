@@ -12,8 +12,6 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 openai_models = models()
 
-model_to_use = ""
-
 response_id = None
 
 def decision():
@@ -66,9 +64,6 @@ def chat_with_gpt(model_to_use, user_promt):
     global response_id
     promt = user_promt
     model = model_to_use
-
-    if promt == "q".lower():
-        print("Goodbye!")
         
     try:
         response = client.responses.create(
